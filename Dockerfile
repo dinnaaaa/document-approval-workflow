@@ -1,4 +1,3 @@
-
 FROM php:8.2-apache
 
 RUN apt-get update \
@@ -6,8 +5,9 @@ RUN apt-get update \
     && docker-php-ext-install pdo_pgsql zip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN a2dismod mpm_event mpm_worker 2>/dev/null || true
-RUN a2enmod mpm_prefork rewrite
+# Keep only the prefork MPM enabled
+RUN a2dismod mpm_event mpm_worker 2>/dev/null || true \
+    && a2enmod mpm_prefork rewrite
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
