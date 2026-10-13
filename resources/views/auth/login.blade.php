@@ -1,6 +1,12 @@
 <x-guest-layout>
 
+    {{-- HEADER --}}
     <div class="mb-4 text-center">
+        <div class="mb-3">
+            <i class="bi bi-file-earmark-check text-primary"
+               style="font-size: 2.5rem;"></i>
+        </div>
+
         <h3 class="fw-bold mb-1">
             Login
         </h3>
@@ -10,22 +16,19 @@
         </p>
     </div>
 
-    {{-- Session Status --}}
+    {{-- SESSION STATUS --}}
     <x-auth-session-status
         class="mb-3"
         :status="session('status')"
     />
 
+    {{-- LOGIN FORM --}}
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
         {{-- EMAIL --}}
         <div class="mb-3">
-
-            <label
-                for="email"
-                class="form-label fw-semibold"
-            >
+            <label for="email" class="form-label fw-semibold">
                 Email
             </label>
 
@@ -46,16 +49,11 @@
                     {{ $message }}
                 </div>
             @enderror
-
         </div>
 
         {{-- PASSWORD --}}
         <div class="mb-3">
-
-            <label
-                for="password"
-                class="form-label fw-semibold"
-            >
+            <label for="password" class="form-label fw-semibold">
                 Password
             </label>
 
@@ -74,14 +72,11 @@
                     {{ $message }}
                 </div>
             @enderror
-
         </div>
 
         {{-- REMEMBER ME --}}
         <div class="mb-4">
-
             <div class="form-check">
-
                 <input
                     id="remember_me"
                     type="checkbox"
@@ -93,41 +88,29 @@
                     for="remember_me"
                     class="form-check-label text-muted"
                 >
-                    {{ __('Remember me') }}
+                    Remember me
                 </label>
-
             </div>
-
         </div>
 
         {{-- ACTION --}}
         <div class="d-flex flex-column gap-3">
-
-            @if (Route::has('password.request'))
-
+            @if (app('router')->has('password.request'))
                 <div class="text-end">
-
                     <a
                         href="{{ route('password.request') }}"
                         class="text-decoration-none small"
                     >
-                        {{ __('Forgot your password?') }}
+                        Forgot your password?
                     </a>
-
                 </div>
-
             @endif
 
-            <button
-                type="submit"
-                class="btn btn-primary w-100"
-            >
+            <button type="submit" class="btn btn-primary w-100">
                 <i class="bi bi-box-arrow-in-right me-1"></i>
-                {{ __('Log in') }}
+                Log in
             </button>
-
         </div>
-
     </form>
 
 </x-guest-layout>
