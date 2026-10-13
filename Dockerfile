@@ -6,8 +6,14 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Keep only the prefork MPM enabled
-RUN a2dismod mpm_event mpm_worker 2>/dev/null || true \
-    && a2enmod mpm_prefork rewrite
+
+# Diagnose and configure Apache MPM
+RUN set -eux; \
+    a2dismod mpm_event || true; \
+    a2dismod mpm_worker || true; \
+    a2enmod mpm_prefork rewrite; \
+    find /etc/apache2/mods-enabled -maxdepth 1 -type l -name 'mpm_*.load' -print; \
+    grep -RniE 'LoadModule[[:space:]]+mpm_' /etc/apache2 || true
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
